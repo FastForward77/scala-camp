@@ -46,16 +46,16 @@ class RetryUtilTest extends FunSuite {
     invocationState.getPauseDurationsInSeconds() shouldBe List(0)
   }
 
-  test("should be invoked once") {
+  test("should be invoked twice") {
     val invocationState = InvocationState(ListBuffer[Long](System.currentTimeMillis()))
     val result = retry[Int](
       decorate(invocationState, () => 1),
-      successOn(1),
+      successOn(2),
       List(1.seconds)
     )
     result shouldBe 1
-    invocationState.getInvocationCount shouldBe 1
-    invocationState.getPauseDurationsInSeconds() shouldBe List(1)
+    invocationState.getInvocationCount shouldBe 2
+    invocationState.getPauseDurationsInSeconds() shouldBe List(0, 1)
   }
 
   test("should stop after the first acceptable result (2nd invocation)") {
@@ -67,7 +67,7 @@ class RetryUtilTest extends FunSuite {
     )
     result shouldBe 1
     invocationState.getInvocationCount shouldBe 2
-    invocationState.getPauseDurationsInSeconds() shouldBe List(0, 1)
+    invocationState.getPauseDurationsInSeconds() shouldBe List(0, 0)
   }
 
   test("should return last result even if not acceptable") {
@@ -78,8 +78,8 @@ class RetryUtilTest extends FunSuite {
       List(0.seconds, 1.seconds, 2.seconds)
     )
     result shouldBe 1
-    invocationState.getInvocationCount shouldBe 3
-    invocationState.getPauseDurationsInSeconds() shouldBe List(0, 1, 2)
+    invocationState.getInvocationCount shouldBe 4
+    invocationState.getPauseDurationsInSeconds() shouldBe List(0, 0, 1, 2)
   }
 
   test("should invoke once immediately if durations are not specified") {

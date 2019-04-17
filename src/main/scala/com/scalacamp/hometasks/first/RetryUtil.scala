@@ -9,19 +9,16 @@ object RetryUtil {
   final def retry[A](block: () => A,
                      acceptResult: A => Boolean,
                      retries: List[FiniteDuration]): A = {
-    retries match {
-      case Nil => block()
-      case head :: tail => {
-        Thread.sleep(head.toMillis)
-        val result = block()
-        if (acceptResult(result)) {
-          result
-        } else {
-          tail match {
-            case Nil => result
-            case _ => retry(block, acceptResult, tail)
-          }
+    val result = block()
+    if (acceptResult(result)) {
+      result
+    } else {
+      retries match {
+        case head::tail => {
+          Thread.sleep(head.toMillis)
+          retry(block, acceptResult, tail)
         }
+        case _ => result
       }
     }
   }
