@@ -39,9 +39,7 @@ trait Validator[T] {
     }
 }
 
-
-object Validator {
-
+object ValidatorConversions {
   implicit def string2PersonValidator(stringValidator: Validator[String]): Validator[Person] =
     new Validator[Person] {
       override def validate(person: Person): Either[String, Person] = {
@@ -55,9 +53,9 @@ object Validator {
         intValidator.validate(person.age).right.map(_ => person)
       }
     }
+}
 
-
-//  def validate[A](value: A)(implicit v: Validator[A]): Either[String, A] = v.validate(value)
+object Validator {
 
   implicit val positiveInt : Validator[Int] = new Validator[Int] {
     override def validate(t: Int): Either[String, Int] = {
@@ -65,7 +63,7 @@ object Validator {
     }
   }
 
-  implicit def lessThan(n: Int): Validator[Int] = new Validator[Int] {
+  def lessThan(n: Int): Validator[Int] = new Validator[Int] {
     override def validate(t: Int): Either[String, Int] = {
       if (t < n) Right(t) else Left(s"$t isn't less than $n")
     }
@@ -80,44 +78,46 @@ object Validator {
   implicit val isPersonValid: Validator[Person] = new Validator[Person] {
     // Returns valid only when the name is not empty and age is in range [1-99].
     override def validate(person: Person): Either[String, Person] = {
-      string2PersonValidator(nonEmpty) and lessThan(100) and positiveInt validate person
+      import ValidatorConversions._
+      string2PersonValidator(nonEmpty) /*and lessThan(100)*/ and positiveInt validate person
     }
   }
 
-  implicit class ValidatorOps[A](value: A) {
+
+}
+
+object ValidatorSyntax {
+  implicit class Implicit[A](value: A) {
     def validate(implicit validatorInstance: Validator[A]): Either[String, A] = {
       validatorInstance.validate(value)
     }
   }
-
-//  implicit class ValidatorOps[A: Validator](value: A) {
-//    def validate: Either[String, A] = implicitly[Validator[A]].validate(value)
-//  }
+  implicit class Explicit[A](value: A) {
+    def validate(validatorInstance: Validator[A]): Either[String, A] = {
+      validatorInstance.validate(value)
+    }
+  }
 }
-
 
 object ValidApp extends App {
   import Validator._
+  import ValidatorSyntax.Explicit
+  2 validate (positiveInt and lessThan(10))
 
-  // uncomment make possible next code to compile
-//  2 validate (positiveInt and lessThan(10))
-
-  // uncomment make possible next code to compile
   "" validate Validator.nonEmpty
 
-  // uncomment make possible next code to compile
-  print(Person(name = "John", age = 25) validate isPersonValid)
+  Person(name = "John", age = 25) validate isPersonValid
 }
 
 object ImplicitValidApp extends App {
-  import Validator.ValidatorOps
-  import Validator.isPersonValid
-  // uncomment next code and make it compilable and workable
+  import ValidatorSyntax.Implicit
+  import Validator._
+
   Person(name = "John", age = 25) validate
-  import Validator.nonEmpty
+
   "asdasd" validate
-  import Validator.positiveInt
-    234.validate
+
+  234.validate
 }
 
 
