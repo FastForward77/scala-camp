@@ -1,6 +1,5 @@
 package com.scalacamp.hometask.first
 
-import akka.actor.{ActorSystem, Scheduler}
 import com.scalacamp.hometasks.first.RetryUtil._
 import org.scalatest.FunSuite
 import org.scalatest.Matchers._
@@ -99,8 +98,6 @@ class RetryUtilTest extends FunSuite with ScalaFutures {
 
   test("async retry should stop after the first acceptable result (1st invocation)") {
     import scala.concurrent.ExecutionContext.Implicits.global
-    val actorSystem = ActorSystem()
-    implicit val scheduler = actorSystem.scheduler
     val invocationState = InvocationState(ListBuffer[Long](System.currentTimeMillis()))
     val resultFuture = retry[Int](
       decorate(invocationState, () => Future{1}),
@@ -116,8 +113,6 @@ class RetryUtilTest extends FunSuite with ScalaFutures {
 
   test("async retry should be invoked twice") {
     import scala.concurrent.ExecutionContext.Implicits.global
-    val actorSystem = ActorSystem()
-    implicit val scheduler = actorSystem.scheduler
     val invocationState = InvocationState(ListBuffer[Long](System.currentTimeMillis()))
     val resultFuture = retry[Int](
       decorate(invocationState, () => Future{1}),
@@ -133,8 +128,6 @@ class RetryUtilTest extends FunSuite with ScalaFutures {
 
   test("async retry should stop after the first acceptable result (2nd invocation)") {
     import scala.concurrent.ExecutionContext.Implicits.global
-    val actorSystem = ActorSystem()
-    implicit val scheduler = actorSystem.scheduler
     val invocationState = InvocationState(ListBuffer[Long](System.currentTimeMillis()))
     val resultFuture = retry[Int](
       decorate(invocationState, () => Future(1)),
@@ -150,8 +143,6 @@ class RetryUtilTest extends FunSuite with ScalaFutures {
 
   test("async retry should return last result even if not acceptable") {
     import scala.concurrent.ExecutionContext.Implicits.global
-    val actorSystem = ActorSystem()
-    implicit val scheduler = actorSystem.scheduler
     val invocationState = InvocationState(ListBuffer[Long](System.currentTimeMillis()))
     val resultFuture = retry[Int](
       decorate(invocationState, () => Future(1)),
@@ -168,8 +159,6 @@ class RetryUtilTest extends FunSuite with ScalaFutures {
 
   test("async retry should invoke once immediately if durations are not specified") {
     import scala.concurrent.ExecutionContext.Implicits.global
-    val actorSystem = ActorSystem()
-    implicit val scheduler = actorSystem.scheduler
     val invocationState = InvocationState(ListBuffer[Long](System.currentTimeMillis()))
     val resultFuture = retry[Int](
       decorate(invocationState, () => Future(1)),
@@ -185,8 +174,6 @@ class RetryUtilTest extends FunSuite with ScalaFutures {
 
   test("async retry on failed future") {
     import scala.concurrent.ExecutionContext.Implicits.global
-    val actorSystem = ActorSystem()
-    implicit val scheduler: Scheduler = actorSystem.scheduler
     val invocationState = InvocationState(ListBuffer[Long](System.currentTimeMillis()))
     val resultFuture = retry[Int](
       decorate(invocationState, () => {

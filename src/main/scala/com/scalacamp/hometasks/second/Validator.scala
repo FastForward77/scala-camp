@@ -83,17 +83,8 @@ object Validator {
     }
   }
 
-
-}
-
-object ValidatorSyntax {
-  implicit class Implicit[A](value: A) {
+  implicit class ValidatorSyntax[A](value: A) {
     def validate(implicit validatorInstance: Validator[A]): Either[String, A] = {
-      validatorInstance.validate(value)
-    }
-  }
-  implicit class Explicit[A](value: A) {
-    def validate(validatorInstance: Validator[A]): Either[String, A] = {
       validatorInstance.validate(value)
     }
   }
@@ -101,7 +92,6 @@ object ValidatorSyntax {
 
 object ValidApp extends App {
   import Validator._
-  import ValidatorSyntax.Explicit
   2 validate (positiveInt and lessThan(10))
 
   "" validate Validator.nonEmpty
@@ -110,7 +100,6 @@ object ValidApp extends App {
 }
 
 object ImplicitValidApp extends App {
-  import ValidatorSyntax.Implicit
   import Validator._
 
   Person(name = "John", age = 25) validate
