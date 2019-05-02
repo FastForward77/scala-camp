@@ -39,23 +39,23 @@ trait Validator[T] {
     }
 }
 
-object ValidatorConversions {
-  implicit def string2PersonValidator(stringValidator: Validator[String]): Validator[Person] =
-    new Validator[Person] {
-      override def validate(person: Person): Either[String, Person] = {
-        stringValidator.validate(person.name).right.map(_ => person)
-      }
-    }
-
-  implicit def int2PersonValidator(intValidator: Validator[Int]): Validator[Person] =
-    new Validator[Person] {
-      override def validate(person: Person): Either[String, Person] = {
-        intValidator.validate(person.age).right.map(_ => person)
-      }
-    }
-}
-
 object Validator {
+
+  object PersonValidatorConversions {
+    implicit def string2PersonValidator(stringValidator: Validator[String]): Validator[Person] =
+      new Validator[Person] {
+        override def validate(person: Person): Either[String, Person] = {
+          stringValidator.validate(person.name).right.map(_ => person)
+        }
+      }
+
+    implicit def int2PersonValidator(intValidator: Validator[Int]): Validator[Person] =
+      new Validator[Person] {
+        override def validate(person: Person): Either[String, Person] = {
+          intValidator.validate(person.age).right.map(_ => person)
+        }
+      }
+  }
 
   implicit val positiveInt : Validator[Int] = new Validator[Int] {
     override def validate(t: Int): Either[String, Int] = {
@@ -78,8 +78,8 @@ object Validator {
   implicit val isPersonValid: Validator[Person] = new Validator[Person] {
     // Returns valid only when the name is not empty and age is in range [1-99].
     override def validate(person: Person): Either[String, Person] = {
-      import ValidatorConversions._
-      string2PersonValidator(nonEmpty) /*and lessThan(100)*/ and positiveInt validate person
+      import PersonValidatorConversions._
+      string2PersonValidator(nonEmpty) and lessThan(100) and positiveInt validate person
     }
   }
 
