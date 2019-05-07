@@ -21,8 +21,7 @@ trait Validator[T] {
   def and(other: Validator[T]): Validator[T] =
     new Validator[T] {
       override def validate(value: T): Either[String, T] =
-        Validator.this.validate(value).right.flatMap(_ =>
-          other.validate(value).right.map(v2Res => v2Res))
+        Validator.this.validate(value).flatMap(_ => other.validate(value))
     }
 
   /**

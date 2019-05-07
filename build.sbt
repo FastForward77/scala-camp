@@ -4,8 +4,8 @@ name := "hometasks"
 
 version in ThisBuild := "0.0.1-SNAPSHOT"
 
-scalaVersion in ThisBuild := "2.11.11"
+scalaVersion in ThisBuild := "2.12.8"
 
 libraryDependencies ++= Seq(
-  "org.scalatest" % "scalatest_2.11" % "2.2.6" % "test"
+  "org.scalatest" % "scalatest_2.12" % "3.0.8-RC2" % "test"
 )
