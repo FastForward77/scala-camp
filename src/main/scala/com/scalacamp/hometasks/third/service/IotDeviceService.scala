@@ -2,7 +2,7 @@ package com.scalacamp.hometasks.third.service
 
 import cats.Monad
 import com.scalacamp.hometasks.third.domain.{IotDevice}
-import com.scalacamp.hometasks.third.storage.iot.IotDeviceRepository
+import com.scalacamp.hometasks.third.storage.device.IotDeviceRepository
 import com.scalacamp.hometasks.third.storage.user.UserRepository
 import cats.implicits._
 

@@ -1,4 +1,4 @@
-package com.scalacamp.hometasks.third.storage.iot
+package com.scalacamp.hometasks.third.storage.device
 
 import com.scalacamp.hometasks.third.domain.IotDevice
 

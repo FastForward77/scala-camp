@@ -1,7 +1,7 @@
 package com.scalacamp.hometask.third
 
 import com.scalacamp.hometasks.third.service.{IotDeviceService, UserService}
-import com.scalacamp.hometasks.third.storage.iot.InMemoryIotDeviceRepository
+import com.scalacamp.hometasks.third.storage.device.InMemoryIotDeviceRepository
 import com.scalacamp.hometasks.third.storage.user.InMemoryUserRepository
 import org.scalatest.{EitherValues, FunSuite}
 import org.scalatest.Matchers._
