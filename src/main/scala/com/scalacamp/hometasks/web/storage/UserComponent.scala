@@ -1,6 +1,6 @@
-package com.scalacamp.hometask.web.storage
+package com.scalacamp.hometasks.web.storage
 
-import com.scalacamp.hometask.web.domain.User
+import com.scalacamp.hometasks.web.domain.User
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.{existentials, postfixOps}

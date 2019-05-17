@@ -1,4 +1,4 @@
-package com.scalacamp.hometask.web.ops
+package com.scalacamp.hometasks.web.ops
 
 import org.flywaydb.core.Flyway
 

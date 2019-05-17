@@ -1,11 +1,11 @@
-package com.scalacamp.hometask.web.ops
+package com.scalacamp.hometasks.web.ops
 
 import java.sql.Timestamp
 import java.time.Instant
 import java.util.UUID
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
-import com.scalacamp.hometask.web.domain.User
+import com.scalacamp.hometasks.web.domain.User
 import spray.json.{DefaultJsonProtocol, JsNumber, JsString, JsValue, JsonFormat, RootJsonFormat}
 
 trait BaseJsonProtocol extends DefaultJsonProtocol {

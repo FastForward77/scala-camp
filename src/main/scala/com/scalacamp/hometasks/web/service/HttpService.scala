@@ -1,4 +1,4 @@
-package com.scalacamp.hometask.web.service
+package com.scalacamp.hometasks.web.service
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.server.Route

@@ -1,4 +1,4 @@
-package com.scalacamp.hometask.web.storage
+package com.scalacamp.hometasks.web.storage
 
 import java.sql.Timestamp
 import java.util.UUID

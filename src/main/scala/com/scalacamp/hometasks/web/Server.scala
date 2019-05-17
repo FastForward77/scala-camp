@@ -1,4 +1,4 @@
-package com.scalacamp.hometask.web
+package com.scalacamp.hometasks.web
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http

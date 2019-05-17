@@ -1,9 +1,9 @@
-package com.scalacamp.hometask.web.routes
+package com.scalacamp.hometasks.web.routes
 
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import com.scalacamp.hometask.web.domain.User
-import com.scalacamp.hometask.web.ops.JsonProtocol
+import com.scalacamp.hometasks.web.domain.User
+import com.scalacamp.hometasks.web.ops.JsonProtocol
 
 import scala.concurrent.ExecutionContext
 
