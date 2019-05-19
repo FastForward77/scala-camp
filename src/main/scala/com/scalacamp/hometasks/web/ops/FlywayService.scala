@@ -1,16 +1,17 @@
 package com.scalacamp.hometasks.web.ops
 
+import com.scalacamp.hometasks.web.config.DatabaseConfig
 import org.flywaydb.core.Flyway
 
 import scala.util.Try
 
 /**
-  * Database migrations
+  * Database migration
   */
-class FlywayService(jdbcUrl: String, dbUser: String, dbPassword: String) {
+class FlywayService(dbConfig: DatabaseConfig) {
 
   private[this] val flyway = new Flyway()
-  flyway.setDataSource(jdbcUrl, dbUser, dbPassword)
+  flyway.setDataSource(dbConfig.jdbcUrl, dbConfig.user, dbConfig.password)
 
   def migrateDatabaseSchema(): Int = Try(flyway.migrate()).getOrElse {
     flyway.repair()
@@ -18,10 +19,4 @@ class FlywayService(jdbcUrl: String, dbUser: String, dbPassword: String) {
   }
 
   def dropDatabase(): Unit = flyway.clean()
-}
-
-trait FlywayIntegration {
-  val flyWayService = new FlywayService(jdbcUrl, dbUser, dbPassword)
-
-  flyWayService.migrateDatabaseSchema()
 }

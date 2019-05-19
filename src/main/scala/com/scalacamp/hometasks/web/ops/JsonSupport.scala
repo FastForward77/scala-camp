@@ -35,5 +35,5 @@ trait BaseJsonProtocol extends DefaultJsonProtocol {
   * Implicit json conversion -> Nothing to do when we complete the object
   */
 trait JsonProtocol extends SprayJsonSupport with BaseJsonProtocol {
-  implicit val userFormat: RootJsonFormat[User] = jsonFormat10(User)
+  implicit val userFormat: RootJsonFormat[User] = jsonFormat4(User)
 }

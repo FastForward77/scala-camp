@@ -1,6 +1,6 @@
 package com.scalacamp.hometask.third.storage.user
 
-import com.scalacamp.hometasks.third.storage.user.InMemoryUserRepository
+import com.scalacamp.hometasks.web.storage.repo.InMemoryUserRepository
 import org.scalatest.FunSuite
 import org.scalatest.Matchers._
 
@@ -8,7 +8,9 @@ class InMemoryUserRepositoryTest extends FunSuite {
   test("should register user and get him by by id and username") {
     val userRepository = new InMemoryUserRepository
     val username = "Bob"
-    val user = userRepository.registerUser(username)
+    val address = Some("address")
+    val email = "123@email.com"
+    val user = userRepository.registerUser(username, address, email)
     val userById = userRepository.getById(user.id)
     val userByUsername = userRepository.getByUsername(username)
     userById.get shouldBe user

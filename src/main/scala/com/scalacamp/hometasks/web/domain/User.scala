@@ -1,5 +1,3 @@
 package com.scalacamp.hometasks.web.domain
 
-class User {
-
-}
+case class User(id: Long, username: String, address: Option[String], email: String)

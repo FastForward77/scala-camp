@@ -1,8 +1,9 @@
 package com.scalacamp.hometask.third
 
-import com.scalacamp.hometasks.third.service.{IotDeviceService, UserService}
+import com.scalacamp.hometasks.third.service.IotDeviceService
 import com.scalacamp.hometasks.third.storage.device.InMemoryIotDeviceRepository
-import com.scalacamp.hometasks.third.storage.user.InMemoryUserRepository
+import com.scalacamp.hometasks.web.service.UserService
+import com.scalacamp.hometasks.web.storage.repo.InMemoryUserRepository
 import org.scalatest.{EitherValues, FunSuite}
 import org.scalatest.Matchers._
 
@@ -14,8 +15,10 @@ class IotDeviceServiceTest extends FunSuite with EitherValues {
     val userService = new UserService(userRepository)
 
     val username = "Bob"
+    val address = Some("address")
+    val email = "123@email.com"
     val deviceSerial = "123456"
-    val resultUser = userService.registerUser(username).right.value
+    val resultUser = userService.registerUser(username, address, email).right.value
 
     val device = deviceService.registerDevice(resultUser.id, deviceSerial).right.value
     device.userId shouldBe resultUser.id
@@ -39,8 +42,10 @@ class IotDeviceServiceTest extends FunSuite with EitherValues {
     val userService = new UserService(userRepository)
 
     val username = "Bob"
+    val address = Some("address")
+    val email = "123@email.com"
     val deviceSerial = "123456"
-    val resultUser = userService.registerUser(username).right.value
+    val resultUser = userService.registerUser(username, address, email).right.value
 
     deviceService.registerDevice(resultUser.id, deviceSerial)
     deviceService.registerDevice(resultUser.id, deviceSerial).isLeft shouldBe true

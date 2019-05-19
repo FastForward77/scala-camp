@@ -3,26 +3,33 @@ package com.scalacamp.hometasks.web
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
-import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.Route
+import com.scalacamp.hometasks.web.config.AppConfig
+import com.scalacamp.hometasks.web.ops.FlywayService
+import com.scalacamp.hometasks.web.routes.UserRoutes
+import com.scalacamp.hometasks.web.service.UserService
+import com.scalacamp.hometasks.web.storage.repo.DbUserRepository
 import com.typesafe.scalalogging.Logger
+import slick.basic.DatabaseConfig
+import slick.jdbc.JdbcProfile
 
+import cats.implicits._
 import scala.io.StdIn
 
 object Server extends App {
   val logger = Logger(this.getClass)
+  val conf = new AppConfig
 
-  implicit val system = ActorSystem("my-system")
+  implicit val system = ActorSystem(conf.applicationName)
   implicit val materializer = ActorMaterializer()
+
   implicit val executionContext = system.dispatcher
 
-  def route = path("hello") {
-    get {
-      complete("Hello, World!")
-    }
-  }
+//  new FlywayService(conf.databaseConfig).migrateDatabaseSchema()
 
-  val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
+  val dbConfig = DatabaseConfig.forConfig[JdbcProfile]("db.h2mem")
+  val userService = new UserService(new DbUserRepository(dbConfig))
+  val bindingFuture = Http().bindAndHandle(new UserRoutes(userService).routes,
+    conf.httpConfig.interface, conf.httpConfig.port)
 
   logger.info(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
   StdIn.readLine() // let it run until user presses return
