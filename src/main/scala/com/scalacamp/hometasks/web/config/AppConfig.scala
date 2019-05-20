@@ -9,11 +9,7 @@ trait HttpConfig {
 }
 
 trait DatabaseConfig {
-  def profile: String
-
   def port: Int
-
-  def driverName: String
 
   def databaseName: String
 
@@ -22,8 +18,6 @@ trait DatabaseConfig {
   def user: String
 
   def password: String
-
-  def numThreads: Int
 }
 
 class AppConfig {
@@ -38,16 +32,13 @@ class AppConfig {
     lazy val port: Int = httpConfig.getInt("port")
   }
 
-  lazy val databaseConfig: DatabaseConfig = new DatabaseConfig {
-    private val databaseConfig = config.getConfig("db")
+  def databaseConfig(dbName: String): DatabaseConfig = new DatabaseConfig {
+    private val databaseConfig = config.getConfig(s"db.${dbName}.db")
 
-    lazy val profile: String = databaseConfig.getString("profile")
     lazy val port: Int = databaseConfig.getInt("port")
-    lazy val driverName: String = databaseConfig.getString("driver")
     lazy val databaseName: String = databaseConfig.getString("databaseName")
-    lazy val jdbcUrl: String = databaseConfig.getString("jdbcUrl")
+    lazy val jdbcUrl: String = databaseConfig.getString("url")
     lazy val user: String = databaseConfig.getString("user")
     lazy val password: String = databaseConfig.getString("password")
-    lazy val numThreads: Int = databaseConfig.getInt("numThreads")
   }
 }

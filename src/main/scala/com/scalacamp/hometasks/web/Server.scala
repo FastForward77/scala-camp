@@ -19,14 +19,16 @@ object Server extends App {
   val logger = Logger(this.getClass)
   val conf = new AppConfig
 
+  val database = "postgre"
+
   implicit val system = ActorSystem(conf.applicationName)
   implicit val materializer = ActorMaterializer()
 
   implicit val executionContext = system.dispatcher
 
-//  new FlywayService(conf.databaseConfig).migrateDatabaseSchema()
+  new FlywayService(conf.databaseConfig(database)).migrateDatabaseSchema()
 
-  val dbConfig = DatabaseConfig.forConfig[JdbcProfile]("db.h2mem")
+  val dbConfig = DatabaseConfig.forConfig[JdbcProfile](s"db.${database}")
   val userService = new UserService(new DbUserRepository(dbConfig))
   val bindingFuture = Http().bindAndHandle(new UserRoutes(userService).routes,
     conf.httpConfig.interface, conf.httpConfig.port)

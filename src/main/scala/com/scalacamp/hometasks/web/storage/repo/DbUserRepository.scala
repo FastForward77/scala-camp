@@ -1,11 +1,13 @@
 package com.scalacamp.hometasks.web.storage.repo
 
+import com.scalacamp.hometasks.first.RetryUtil
 import com.scalacamp.hometasks.web.domain.User
 import slick.basic.DatabaseConfig
 import slick.jdbc.JdbcProfile
 
 import scala.language.{existentials, postfixOps}
 import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.duration._
 
 
 class DbUserRepository(val dbConfig: DatabaseConfig[JdbcProfile])(implicit ex: ExecutionContext)
@@ -28,6 +30,8 @@ class DbUserRepository(val dbConfig: DatabaseConfig[JdbcProfile])(implicit ex: E
 
   override def registerUser(username: String, address: Option[String], email: String): Future[User] = {
     val action = insertQuery += User(0, username, address, email)
+    // do we really need this? what success condition should be used?
+    //RetryUtil.retry[User](() => db.run(action), user => true, List(0.seconds, 1.seconds, 2.seconds))
     db.run(action)
   }
 
