@@ -1,7 +1,0 @@
-CREATE TABLE users (
-  id INT NOT NULL AUTO_INCREMENT,
-  username VARCHAR NOT NULL,
-  address VARCHAR,
-  email VARCHAR NOT NULL,
-  PRIMARY KEY (id)
-);
