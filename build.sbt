@@ -27,7 +27,8 @@ libraryDependencies ++= {
     "org.slf4j" % "slf4j-nop" % "1.6.4",
     "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
     "ch.qos.logback" % "logback-classic" % "1.2.3",
-    "com.h2database" % "h2" % "1.4.192"/* % "test"*/,
+    "com.h2database" % "h2" % "1.4.192" % "test",
+    "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % "test",
     "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion % "test",
     "org.scalatest" % "scalatest_2.12" % "3.0.8-RC2" % "test"
   )
