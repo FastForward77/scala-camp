@@ -68,9 +68,10 @@ object Validator {
     }
   }
 
-  implicit val nonEmpty : Validator[String] = new Validator[String] {
+  implicit val isAlphanumeric : Validator[String] = new Validator[String] {
     override def validate(t: String): Either[String, String] = {
-      if (t == null || t.isEmpty) Left("String is empty") else Right(t)
+      if (t == null || t.isEmpty || !t.forall(_.isLetterOrDigit)) Left("String should contain only alphanumeric characters")
+      else Right(t)
     }
   }
 
@@ -78,7 +79,7 @@ object Validator {
     // Returns valid only when the name is not empty and age is in range [1-99].
     override def validate(person: Person): Either[String, Person] = {
       import PersonValidatorConversions._
-      string2PersonValidator(nonEmpty) and lessThan(100) and positiveInt validate person
+      string2PersonValidator(isAlphanumeric) and lessThan(100) and positiveInt validate person
     }
   }
 
@@ -93,7 +94,7 @@ object ValidApp extends App {
   import Validator._
   2 validate (positiveInt and lessThan(10))
 
-  "" validate Validator.nonEmpty
+  "" validate Validator.isAlphanumeric
 
   Person(name = "John", age = 25) validate isPersonValid
 }

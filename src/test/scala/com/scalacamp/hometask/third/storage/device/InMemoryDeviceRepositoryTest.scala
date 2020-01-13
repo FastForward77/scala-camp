@@ -1,7 +1,7 @@
 package com.scalacamp.hometask.third.storage.device
 
 import com.scalacamp.hometasks.third.storage.device.InMemoryIotDeviceRepository
-import com.scalacamp.hometasks.third.storage.user.InMemoryUserRepository
+import com.scalacamp.hometasks.web.storage.repo.InMemoryUserRepository
 import org.scalatest.FunSuite
 import org.scalatest.Matchers._
 
